@@ -1,3 +1,4 @@
+import json
 import sys
 
 import bs4
@@ -52,6 +53,5 @@ for data in parse_data(items):
     print(asset_url)
     download_image(asset_url, undownloaded_img)
 
-f = open("undownloaded_asset.txt", "a")
-f.write(undownloaded_img)
-f.close()
+with open('undownloaded_file.json', 'w', encoding='utf-8') as f:
+    json.dump(data, f, ensure_ascii=False, indent=4)
