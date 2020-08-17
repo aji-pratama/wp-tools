@@ -7,9 +7,10 @@ import os
 import urllib.request
 from urllib.parse import urlparse
 
+xml_file_name = sys.argv[1]
 content = []
 
-with open("gojekviet_asset.xml", "r") as file:
+with open(xml_file_name, "r") as file:
     content = file.readlines()
     content = "".join(content)
     bs_content = bs(content, 'html.parser')
