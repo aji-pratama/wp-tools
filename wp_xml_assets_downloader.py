@@ -1,7 +1,9 @@
-import os
-
+import bs4
+import lxml
+from xml.etree import ElementTree
 from bs4 import BeautifulSoup as bs
 
+import os
 import urllib.request
 from urllib.parse import urlparse
 
@@ -15,17 +17,17 @@ with open("gojekviet_asset.xml", "r") as file:
 
 def download_image(url_req, undownloaded_img=[]):
     try:
-        url_req_path = urllib.parse.quote(urlparse(url_req).path)
-        path = '.{}'.format(url_req_path)
+        path = '.{}'.format(urlparse(url_req).path)        
+        url_ascii = '{}://{}/{}'.format(urlparse(url_req).scheme, urlparse(url_req).netloc, urllib.parse.quote(urlparse(url_req).path))
+
         os.makedirs(os.path.dirname(path), exist_ok=True)
-        urllib.request.urlretrieve(url_req, path)
+        urllib.request.urlretrieve(url_ascii, path)
     except Exception as e:
         undownloaded_img.append({
             "url": url_req,
             "error": e
         })
         print('url: {}, err: {}'.format(url_req, e))
-
         
 def parse_data(items):
     data_blog = []
