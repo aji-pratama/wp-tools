@@ -1,20 +1,13 @@
-import json
-import sys
+import os
 
-import bs4
-import lxml
-from xml.etree import ElementTree
 from bs4 import BeautifulSoup as bs
 
-import os
 import urllib.request
 from urllib.parse import urlparse
 
-xml_file_name = sys.argv[1]
-
 content = []
 
-with open(xml_file_name, "r") as file:
+with open("gojekviet_asset.xml", "r") as file:
     content = file.readlines()
     content = "".join(content)
     bs_content = bs(content, 'html.parser')
@@ -22,7 +15,8 @@ with open(xml_file_name, "r") as file:
 
 def download_image(url_req, undownloaded_img=[]):
     try:
-        path = '.{}'.format(urlparse(url_req).path)
+        url_req_path = urllib.parse.quote(urlparse(url_req).path)
+        path = '.{}'.format(url_req_path)
         os.makedirs(os.path.dirname(path), exist_ok=True)
         urllib.request.urlretrieve(url_req, path)
     except Exception as e:
@@ -52,6 +46,3 @@ for data in parse_data(items):
     asset_url = data['asset_url']
     print(asset_url)
     download_image(asset_url, undownloaded_img)
-
-with open('undownloaded_file.json', 'w', encoding='utf-8') as f:
-    json.dump(data, f, ensure_ascii=False, indent=4)
